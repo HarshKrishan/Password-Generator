@@ -5,78 +5,76 @@ import {
   View,
   SafeAreaView,
   TouchableOpacity,
-  Clipboard,
   ToastAndroid,
 } from 'react-native';
-import React,{useState} from 'react';
+import React, {useState} from 'react';
 import {Slider} from '@miblanchard/react-native-slider';
 import {passwordStrength} from 'check-password-strength';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
-
+import Clipboard from '@react-native-clipboard/clipboard';
 
 export default function App() {
-  const [password, setPassword] = useState('')
-  const [isPasswordGenerated, setIsPasswordGenerated] = useState(false)
-  const [includeLowercase, setIncludeLowercase] = useState(false)
-  const [passwordLength, setPasswordLength] = useState(8)
-  const [includeUppercase, setIncludeUppercase] = useState(false)
-  const [includeNumbers, setIncludeNumbers] = useState(false)
-  const [includeSymbols, setIncludeSymbols] = useState(false)
-  const [strength, setStrength] = useState('')
-  const [warning, setWarning] = useState('Please select atleast one option')
-  const [selectCount, setSelectCount] = useState(0)
-  const generatePassword = (passwordLength)=>{
-    const lowercase = 'abcdefghijklmnopqrstuvwxyz'
-    const uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-    const numbers = '0123456789'
-    const symbols = '!@#$%^&*()_+='
+  const [password, setPassword] = useState('');
+  const [isPasswordGenerated, setIsPasswordGenerated] = useState(false);
+  const [includeLowercase, setIncludeLowercase] = useState(false);
+  const [passwordLength, setPasswordLength] = useState(8);
+  const [includeUppercase, setIncludeUppercase] = useState(false);
+  const [includeNumbers, setIncludeNumbers] = useState(false);
+  const [includeSymbols, setIncludeSymbols] = useState(false);
+  const [strength, setStrength] = useState('');
+  const [warning, setWarning] = useState('Please select atleast one option');
+  const [selectCount, setSelectCount] = useState(0);
+  const generatePassword = passwordLength => {
+    const lowercase = 'abcdefghijklmnopqrstuvwxyz';
+    const uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const numbers = '0123456789';
+    const symbols = '!@#$%^&*()_+=';
 
-    let characters = []
+    let characters = [];
 
-    if(includeLowercase){
-      characters += lowercase
+    if (includeLowercase) {
+      characters += lowercase;
     }
-    if(includeUppercase){
-      characters += uppercase
+    if (includeUppercase) {
+      characters += uppercase;
     }
-    if(includeNumbers){
-      characters += numbers
+    if (includeNumbers) {
+      characters += numbers;
     }
-    if(includeSymbols){
-      characters += symbols
+    if (includeSymbols) {
+      characters += symbols;
     }
 
-    const password = createPassword(characters,passwordLength)
-    setPassword(password)
+    const password = createPassword(characters, passwordLength);
+    setPassword(password);
     const res = checkStrength(password);
     setStrength(res);
-    setIsPasswordGenerated(true)
+    setIsPasswordGenerated(true);
+  };
 
-    
-  }
-
-  const createPassword = (characters,length)=>{
-    let pwd = ''
-    for(let i=0;i<length;i++){
-      pwd += characters.charAt(Math.floor(Math.random()*characters.length))
+  const createPassword = (characters, length) => {
+    let pwd = '';
+    for (let i = 0; i < length; i++) {
+      pwd += characters.charAt(Math.floor(Math.random() * characters.length));
     }
-    return pwd
-  }
+    return pwd;
+  };
 
-  const checkStrength = (password)=>{
-    return passwordStrength(password).value
-  }
+  const checkStrength = password => {
+    return passwordStrength(password).value;
+  };
 
-  const resetPassword = ()=>{
-    setPassword('')
-    setIsPasswordGenerated(false)
-    setIncludeLowercase(false)
-    setIncludeUppercase(false)
-    setIncludeNumbers(false)
-    setIncludeSymbols(false)
-  }
-  const writeToClipboard=() => {
-    Clipboard.setString(password);
+  const resetPassword = () => {
+    setPassword('');
+    setIsPasswordGenerated(false);
+    setIncludeLowercase(false);
+    setIncludeUppercase(false);
+    setIncludeNumbers(false);
+    setIncludeSymbols(false);
+  };
+
+  const writeToClipboard = () => {
+    Clipboard.setString(password, {suppressWarnings: true});
     ToastAndroid.show('Text copied to clipboard!', ToastAndroid.SHORT);
   };
   return (
@@ -146,12 +144,13 @@ export default function App() {
               setIncludeUppercase(!includeUppercase);
               if (includeUppercase) {
                 setSelectCount(selectCount - 1);
-                if (selectCount == 0) {
-                  setIsPasswordGenerated(false);
-                  setPassword('');
-                }
               } else {
                 setSelectCount(selectCount + 1);
+              }
+              if (selectCount == 0) {
+                setIsPasswordGenerated(false);
+                setPassword('');
+                setStrength('');
               }
             }}
             style={styles.checkbox}
@@ -175,12 +174,13 @@ export default function App() {
               setIncludeLowercase(!includeLowercase);
               if (includeLowercase) {
                 setSelectCount(selectCount - 1);
-                if (selectCount == 0) {
-                  setIsPasswordGenerated(false);
-                  setPassword('');
-                }
               } else {
                 setSelectCount(selectCount + 1);
+              }
+              if (selectCount == 0) {
+                setIsPasswordGenerated(false);
+                setPassword('');
+                setStrength('');
               }
             }}
             style={styles.checkbox}
@@ -204,12 +204,13 @@ export default function App() {
               setIncludeNumbers(!includeNumbers);
               if (includeNumbers) {
                 setSelectCount(selectCount - 1);
-                if (selectCount == 0) {
-                  setIsPasswordGenerated(false);
-                  setPassword('');
-                }
               } else {
                 setSelectCount(selectCount + 1);
+              }
+              if (selectCount == 0) {
+                setIsPasswordGenerated(false);
+                setPassword('');
+                setStrength('');
               }
             }}
             style={styles.checkbox}
@@ -233,12 +234,13 @@ export default function App() {
               setIncludeSymbols(!includeSymbols);
               if (includeSymbols) {
                 setSelectCount(selectCount - 1);
-                if (selectCount == 0) {
-                  setIsPasswordGenerated(false);
-                  setPassword('');
-                }
               } else {
                 setSelectCount(selectCount + 1);
+              }
+              if (selectCount == 0) {
+                setIsPasswordGenerated(false);
+                setPassword('');
+                setStrength('');
               }
             }}
             style={styles.checkbox}
@@ -277,10 +279,9 @@ export default function App() {
   );
 }
 
-
 const styles = StyleSheet.create({
   heading: {
-    fontSize: 40,
+    fontSize: 30,
     fontWeight: 'bold',
     textAlign: 'center',
     color: '#000',
@@ -354,7 +355,6 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     justifyContent: 'space-between',
     flexDirection: 'row',
-    
   },
   strength: {
     color: '#7f7f7f',
@@ -369,27 +369,24 @@ const styles = StyleSheet.create({
     textAlign: 'right',
     marginLeft: 30,
   },
-  warning:{
-    color:'red',
-    fontSize:20,
-    fontWeight:'bold',
+  warning: {
+    color: 'red',
+    fontSize: 20,
+    fontWeight: 'bold',
   },
-  Weak:{
-    color:'red',
-    fontSize:20,
-    fontWeight:'bold',
-    
+  Weak: {
+    color: 'red',
+    fontSize: 20,
+    fontWeight: 'bold',
   },
-  Medium:{
-    color:'yellow',
-    fontSize:20,
-    fontWeight:'bold',
-    
+  Medium: {
+    color: 'yellow',
+    fontSize: 20,
+    fontWeight: 'bold',
   },
-  Strong:{
-    color:'green',
-    fontSize:20,
-    fontWeight:'bold',
-    
-  }
+  Strong: {
+    color: 'green',
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
 });

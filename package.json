@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@miblanchard/react-native-slider": "^2.3.1",
+    "@react-native-clipboard/clipboard": "^1.12.1",
     "check-password-strength": "^2.0.7",
     "deprecated-react-native-prop-types": "^5.0.0",
     "formik": "^2.4.5",
