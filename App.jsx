@@ -269,7 +269,9 @@ export default function App() {
         <TouchableOpacity
           style={styles.generateBox}
           onPress={() => {
-            generatePassword(passwordLength);
+            if (selectCount > 0) {
+              generatePassword(passwordLength);
+            }
           }}>
           <Text style={styles.generateText}>Generate</Text>
           <Image source={require('./icons/lock.png')} style={styles.lock} />
